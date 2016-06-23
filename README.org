@@ -1,0 +1,10 @@
+#+TITLE: Shop Database
+* What is it?
+This projects creates and implements a database for useful
+purposes. In this case a mock project acting as a storefront for a company,
+Generic Co.
+* Why is it?
+This project is created for the purpose of an assessment, for credits
+* How does it work?
+The project contains two parts, the database and the web server code. The
+database backend is a simple sqlite server that runs
