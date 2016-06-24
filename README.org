@@ -7,4 +7,8 @@ Generic Co.
 This project is created for the purpose of an assessment, for credits
 * How does it work?
 The project contains two parts, the database and the web server code. The
-database backend is a simple sqlite server that runs
+database backend is a simple sqlite server that follows the following schema
+#+NAME: database-diagram
+#+CAPTION: Database Diagram
+[[file:diagram.png]]
+This is plugged into a web server that serves the available to browse in
