@@ -19,8 +19,24 @@
 (define-easy-handler (lander :uri "/") ()
   (redirect "/search"))
 ;; TODO implement a macro that generates handlers for css rules
-(define-easy-handler (skeleton-handler :uri ""))
-(define-easy-handler (search-handler :uri "/search") ()
+(defun file-string (file)
+  (with-open-file (stream file)
+    (format nil "~{~A~^~%~}"
+            (loop for line = (read-line stream nil)
+                  while line
+                  collecting line))))
+(defmacro file-handler (handler-name resource-location)
+  `(define-easy-handler (,handler-name :uri (format nil "/~a" ,resource-location)) ()
+     (file-string ,resource-location)))
+(defmacro file-handlers (&rest forms)
+  (let ((fm (mapcar (lambda (i) (cons 'file-handler i)) forms)))
+    `(progn
+       ,@fm)))
+(file-handlers
+ (skeleton "res/css/skeleton.css")
+ (normalize "res/css/normalize.css")
+ (custom-css "res/css/custom.css"))
+(define-easy-handler (search-handler :uri "/search") (query)
   (with-html-output-to-string (s)
     (:html
      (:head
@@ -35,4 +51,16 @@
      (:body
       (:div :class "container"
             (:div :class "header"
-                  (:h2 :class "title" "Hello World")))))))
+                  (:h2 :class "title" "Generic Shop"))
+            (:form :action "/search"
+             (:div :class "row"
+                   (:input :id "searchInput" :class "u-full-width" :placeholder "iPhone +case" :type "text" :name "query")))
+            (:div :class "row"
+                  (:table :class "u-full-width"
+                          (:thead
+                           (:tr
+                            (:th "Preview")
+                            (:th "Name")
+                            (:th "Description")
+                            (:th "Price")))
+                          (:tbody))))))))
