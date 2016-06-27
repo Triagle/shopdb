@@ -11,15 +11,14 @@
                #:cl-ppcre)
   :serial t
   :components ((:file "package")
-               (:file "src/shopdb"))
-  :in-order-to ((test-op (test-op shopdb-test))))
-
-(defsystem shopdb-test
+               (:file "shopdb"))
+  :in-order-to ((test-op (test-op shop-test))))
+(defsystem #:shop-test
   :depends-on (:shopdb
                :prove)
   :defsystem-depends-on (:prove-asdf)
   :components
   ((:file "package")
-   (:test-file "test/database"))
+   (:test-file "database-test"))
   :perform (test-op :after (op c)
                     (funcall (intern #.(string :run) :prove) c)))

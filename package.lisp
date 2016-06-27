@@ -7,4 +7,5 @@
 (defpackage #:database
   (:use #:cl #:resources #:sqlite #:cl-ppcre))
 (defpackage #:database-test
-  (:use #:cl #:prove #:database))
+  (:use #:cl #:prove  #:database #:sqlite)
+  )
