@@ -53,7 +53,7 @@
                                                                                      (:td
                                                                                       (:a :href (format nil "/view?id=~a" (car cur)) (str (cadr cur))))
                                                                                      (:td
-                                                                                      (str (caddr cur)))))))
+                                                                                      (str (format nil "$~,2f" (caddr cur))))))))
           db-rows :initial-value ""))
 (define-easy-handler (view-handler :uri "/view") (id)
   (let ((product (get-product-for id)))
@@ -98,7 +98,7 @@
                   (:h2 :class "title" "Generic Shop"))
             (:form :action "/search"
              (:div :class "row"
-                   (:input :id "searchInput" :class "u-full-width" :placeholder "iPhone +case" :type "text" :name "query")))
+                   (:input :id "searchInput" :class "u-full-width" :value query :placeholder "iPhone +case" :type "text" :name "query")))
             (:div :class "row"
                   (:table :class "u-full-width"
                           (:thead
