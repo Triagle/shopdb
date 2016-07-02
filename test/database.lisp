@@ -8,7 +8,7 @@
 ;; end test
 
 ;;; construct-db-search test
-;; Expected behaviour: convert search into a valid sql query
-(is (construct-db-search "intel +cpu") "select (id, price, name, thumbnail, description) from shop inner join catagories on shop.id = catagories.shop_id where shop.name like '%intel%' and catagories.category in ('cpu')")
-(is (construct-db-search "intel + cpu") 'malformed-search)
+;; Expected behaviour: Run database search
+(is (run-db-search "test" ) '((1 "tes" "test" "test" "test" "test")))
+
 ;; end test
