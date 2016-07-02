@@ -11,7 +11,10 @@
                #:cl-ppcre)
   :serial t
   :components ((:file "package")
-               (:file "shopdb"))
+               (:file "src/shopdb")
+               (:file "src/database")
+               (:file "src/resources")
+               (:file "src/sxql-composer"))
   :in-order-to ((test-op (test-op shop-test))))
 (defsystem #:shop-test
   :depends-on (:shopdb
