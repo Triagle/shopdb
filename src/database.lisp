@@ -24,4 +24,4 @@
 (defun run-db-search (string)
   (let ((lexed-search (parse-search string)))
     (multiple-value-bind (query args) (yield (build-sql-query (car (getf lexed-search :search)) (getf lexed-search :categories)))
-      (remove-duplicates (eval `(execute-to-list resources:*db* ,query ,@args)) :key (lambda (row) (car (last row)))))))
+      (remove-duplicates (eval `(execute-to-list resources:*db* ,query ,@args)) :key #'car))))
