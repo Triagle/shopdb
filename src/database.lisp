@@ -12,6 +12,8 @@
          (categories (mapcar #'string-cdr (remove-if-not #'category? tokens)))
          (search-terms (remove-if #'category? tokens)))
     (list :search search-terms :categories categories)))
+(defun get-product-for (id)
+  (car (or (execute-to-list resources:*db* (yield (select :* (from :shop) (where (:= :id id)))) id) '(nil))))
 (defun build-sql-query (search-term categories)
   (let ((q (select (:id :price :name :thumbnail :description :categories.category)
              (from :shop)
