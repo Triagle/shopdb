@@ -21,7 +21,8 @@
                :prove)
   :defsystem-depends-on (:prove-asdf)
   :components
-  ((:file "package")
-   (:test-file "database-test"))
+  ((:file "test-package")
+   (:file "src/database")
+   (:test-file "test/database"))
   :perform (test-op :after (op c)
                     (funcall (intern #.(string :run) :prove) c)))
