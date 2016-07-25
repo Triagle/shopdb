@@ -24,6 +24,7 @@
   (let ((q (select (:id :name :price :description)
              (from :shop)
              (left-join :categories :on (:= :shop.id :categories.shop_id))
+              (order-by (:desc :price) (:asc :name))
              (where (:like :shop.name (format nil "%~a%" search-term))))))
     (when categories (and-where q `(:in :categories.category ,categories)))
     q))
