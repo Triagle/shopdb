@@ -24,9 +24,11 @@ to ensure that I am not infringing on any ethical issues
 * How does it work?
 The project contains two parts, the database and the web server code. The
 database backend is a simple sqlite server that follows the following schema
+
 #+NAME: database-diagram
 #+CAPTION: Database Diagram
 [[file:diagram.png]]
+
 This is plugged into a web server that serves the available products to browse
 and search. The entire web server, including served html, is written in Common
 Lisp. The reason for this is because Lisp gives me greater flexibility and
@@ -35,7 +37,9 @@ respect to HTML. The[[https://github.com/slime/slime.git][ Slime]] REPL also all
 server without shutting off or requiring complex monkey patching.
 ** Backend design
 The backend has been thoroughly planned and tested.
+
 #+NAME: backend-diagram
 #+CAPTION: Backend Diagram
 [[file:serverflowdiagram.png]]
+
 There are also well commented unit tests in the =test= folder of this project.
