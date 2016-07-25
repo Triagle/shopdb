@@ -5,6 +5,22 @@ purposes. In this case a mock project acting as a storefront for a company,
 Generic Co.
 * Why is it?
 This project is created for the purpose of an assessment, for credits
+* Ethics
+The information you find on the website isn't all mine, however has been checked
+to ensure that I am not infringing on any ethical issues
+- Product Trademarks ::
+  This programs demonstration database contains products whose names are under
+  trademark. This is acceptable in this case as it neither dilutes, defames or
+  misrepresents the products in question, legally speaking I do not need to
+  consult the companies to use the product trademarks in my work, provided I use
+  the trademarks respectfully.
+- Product Prices ::
+  The product prices are sourced from [[http://pricespy.co.nz/][PriceSpy]], however the prices do not belong
+  to PriceSpy itself. Considering that no one actually owns the prices, I see no
+  ethical issues with using them.
+- Product Images ::
+  The images themselves /are/ subject to copyright, however I was careful to filter
+  these images for those labelled for noncommercial reuse. This project is not being
 * How does it work?
 The project contains two parts, the database and the web server code. The
 database backend is a simple sqlite server that follows the following schema
