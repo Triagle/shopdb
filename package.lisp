@@ -1,7 +1,4 @@
 ;;;; package.lisp
-(defpackage #:resources
-  (:use #:cl #:sqlite)
-  (:export *db*))
 (defpackage :sxql.composer
   (:use :cl)
   (:export :and-where
@@ -21,7 +18,7 @@
            :having=)
   (:documentation "Dynamic SXQL query composition"))
 (defpackage #:database
-  (:use #:cl #:resources #:sqlite #:sxql #:sxql.composer #:cl-ppcre)
+  (:use #:cl #:sqlite #:sxql #:sxql.composer #:cl-ppcre :iterate)
   (:export parse-search run-db-search get-product-for))
 (defpackage #:shopdb
   (:use #:cl #:hunchentoot #:cl-who #:database))

@@ -25,7 +25,7 @@
                   collecting line))))
 (defmacro file-handler (handler-name resource-location)
   `(define-easy-handler (,handler-name :uri (format nil "/~a" ,resource-location)) ()
-     (file-string ,resource-location)))
+     (file-string (format nil "../~a" ,resource-location))))
 (defmacro file-handlers (&rest forms)
   (let ((fm (mapcar (lambda (i) (cons 'file-handler i)) forms)))
     `(progn
@@ -38,7 +38,7 @@
 (define-easy-handler (img-handler :uri "/get-thumb") (id full-res)
   (setf (content-type*) "image/jpeg")
   (let ((out (send-headers)))
-    (with-open-file (in (format nil "res/~a/~a.jpeg"
+    (with-open-file (in (format nil "../res/~a/~a.jpeg"
                                 (if (equal full-res "1")
                                     "img"
                                     "thumb")
@@ -55,6 +55,15 @@
                                                                                      (:td
                                                                                       (str (format nil "$~,2f" (caddr cur))))))))
           db-rows :initial-value ""))
+(defun format-key-value-to-html (kv-pair)
+  (with-html-output-to-string (s) (:div :class "six columns"
+                                        (str (reduce
+                                              (lambda (acc cur)
+                                                (concatenate 'string (with-html-output-to-string (s)
+                                                                           (:ul
+                                                                            (:li (:b (format nil "~a: " (car cur)) (:p (str (format nil (cond
+                                                                                                                                          ((eql (type-of (cdr cur))'double-float) "~,2f")
+                                                                                                                                          (t "~a")) (cdr cur)))))))) acc)) kv-pair :initial-value "")))))
 (define-easy-handler (view-handler :uri "/view") (id)
   (let ((product (get-product-for id)))
     (with-html-output-to-string (s)
@@ -77,9 +86,7 @@
               (:div :class "row"
                     (:div :class "six columns"
                           (:img :src (format nil "/get-thumb?id=~a&full-res=1" (car product)) :alt (format nil "Image of ~a" (cadr product))))
-                    (:div :class "six columns"
-                          (:ul
-                           (:li (:b "Name: ") (:p (str (cadr product)))))))))))))
+                    (str (format-key-value-to-html (pairlis '("Name" "Price" "Description") (cdr product)))))))))))
 (define-easy-handler (search-handler :uri "/search") (query)
   (with-html-output-to-string (s)
     (:html
@@ -108,5 +115,3 @@
                             (:th "Price")))
                           (when query
                             (str (format-rows (run-db-search query)))))))))))
-(format-query-results
- (run-db-search "test"))
