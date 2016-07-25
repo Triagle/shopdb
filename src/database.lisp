@@ -28,8 +28,21 @@
              (where (:like :shop.name (format nil "%~a%" search-term))))))
     (when categories (and-where q `(:in :categories.category ,categories)))
     q))
+(defmacro all-rows (statement rows)
+  (let ((bdy (loop for i from 0 upto rows
+                   collect `(statement-column-value ,statement ,i))))
+    `(list
+      ,@bdy)))
 (defun run-db-search (string)
   (let ((lexed-search (parse-search string)))
     (multiple-value-bind (query args) (yield (build-sql-query (car (getf lexed-search :search)) (getf lexed-search :categories)))
       (with-open-database (db "/home/jake/repos/cl/shopdb/res/db/shop.db")
-        (remove-duplicates (eval `(execute-to-list ,db ,query ,@args)) :key #'car)))))
+
+        (loop
+          with statement = (prepare-statement db query)
+          while (step-statement statement)
+            initially (loop for arg in args
+                            for i from 1 upto (length args)
+                            do (bind-parameter statement i arg))
+          collect (all-rows statement 3)
+          finally (finalize-statement statement))))))
