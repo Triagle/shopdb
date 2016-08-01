@@ -19,7 +19,9 @@
     (list :search search-terms :categories categories)))
 (defun get-product-for (id)
   (with-shop-db
-      (car (or (execute-to-list db  (yield (select :* (from :shop) (where (:= :id id)))) id) '(nil)))))
+    (car (or (execute-to-list db  (yield (select :* (from :shop) (where (:= :id id)))) id) '(nil)))))
+(defun get-products-for (ids)
+  (mapcar #'get-product-for ids))
 (defun build-sql-query (search-term categories)
   (let ((q (select (:id :name :price :description)
              (from :shop)
