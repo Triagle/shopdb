@@ -35,11 +35,12 @@
   (let ((lexed-search (parse-search string)))
     (multiple-value-bind (query args) (yield (build-sql-query (car (getf lexed-search :search)) (getf lexed-search :categories)))
       (with-shop-db
-        (loop
+        (remove-duplicates
+         (loop
           with statement = (prepare-statement db query)
           while (step-statement statement)
             initially (loop for arg in args
                             for i from 1 upto (length args)
                             do (bind-parameter statement i arg))
           collect (all-rows statement 3)
-          finally (finalize-statement statement))))))
+          finally (finalize-statement statement)) :key #'car)))))
