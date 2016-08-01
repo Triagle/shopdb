@@ -21,4 +21,4 @@
   (:use #:cl #:sqlite #:sxql #:sxql.composer #:cl-ppcre)
   (:export parse-search run-db-search get-product-for))
 (defpackage #:shopdb
-  (:use #:cl #:hunchentoot #:cl-who #:database))
+  (:use #:cl #:parenscript #:hunchentoot #:cl-who #:database))

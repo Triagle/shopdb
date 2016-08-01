@@ -8,6 +8,7 @@
                #:sxql
                #:sqlite
                #:cl-who
+               #:parenscript
                #:iterate
                #:cl-ppcre)
   :serial t
