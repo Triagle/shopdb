@@ -19,6 +19,6 @@
   (:documentation "Dynamic SXQL query composition"))
 (defpackage #:database
   (:use #:cl #:sqlite #:sxql #:sxql.composer #:cl-ppcre)
-  (:export parse-search run-db-search get-product-for))
+  (:export parse-search run-db-search get-product-for get-products-for))
 (defpackage #:shopdb
   (:use #:cl #:parenscript #:hunchentoot #:cl-who #:database))
