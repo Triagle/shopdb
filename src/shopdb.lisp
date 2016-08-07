@@ -79,7 +79,7 @@
                  (defun read-cookie (name)
                    (let ((name-eq (+ name "="))
                          (ret nil)
-                         (ca (document.cookie.split ";")))
+                         (ca (document.cookie.split "; ")))
                      (loop for i from 0 to (1- (@ ca length))
                            do (progn
                                 (var c (aref ca i))
