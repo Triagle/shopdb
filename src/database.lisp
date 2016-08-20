@@ -35,7 +35,7 @@
         collect (statement-column-value statement i)))
 (defun run-db-search (string)
   (let ((lexed-search (parse-search string)))
-    (multiple-value-bind (query args) (yield (build-sql-query (car (getf lexed-search :search)) (getf lexed-search :categories)))
+    (multiple-value-bind (query args) (yield (build-sql-query (format nil "~{~a~^ ~}"(getf lexed-search :search)) (getf lexed-search :categories)))
       (with-shop-db
         (remove-duplicates
          (loop
