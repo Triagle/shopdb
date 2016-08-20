@@ -110,7 +110,9 @@
     (:body ,@args
       (:div :class "header"
             (:h2 :class "title" "Generic Shop")
-            (:h6 (:a :href "/order" "Order")))
+            (:div :id "navbar-row" :class "row"
+                  (:h6 (:a :href "/" "Home"))
+                  (:h6 (:a :href "/order" "Order"))))
       ,@body)))
 (defmacro defpage (name path args &body body)
   `(define-easy-handler (,name :uri ,path) ,args
