@@ -1,2 +1,2 @@
 (defpackage #:database-test
-  (:use #:cl #:prove  #:database #:sqlite))
+  (:use #:cl #:prove #:database #:sqlite #:sxql))

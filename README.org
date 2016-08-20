@@ -41,3 +41,6 @@ The backend has been thoroughly planned and tested.
 #+NAME: backend-diagram
 #+CAPTION: Backend Diagram
 [[file:serverflowdiagram.png]]
+
+Well commented tests are found in the =test/database.lisp= file, and can be run
+from any repl by quickloading the package, and running =(asdf:test-system :shopdb)=
