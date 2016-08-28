@@ -41,6 +41,83 @@ The backend has been thoroughly planned and tested.
 #+NAME: backend-diagram
 #+CAPTION: Backend Diagram
 [[file:serverflowdiagram.png]]
+* Testing
 
 Well commented tests are found in the =test/database.lisp= file, and can be run
-from any repl by quickloading the package, and running =(asdf:test-system :shopdb)=
+from any repl by quickloading the package, and running =(asdf:test-system
+:shopdb)=.
+
+
+For convenience sake I have include the results of a test from the master branch
+#+BEGIN_EXAMPLE
+Running a test file '/home/jake/quicklisp/local-projects/shopdb/test/database.lisp'
+1..7
+
+ category? tests
+   Expected behaviour: return true for any word that follows the pattern +word, e.g +hello, but not + hello or hello or simply +
+   Testing positive case
+    ✓ T is expected to be T
+   Testing negative easy case
+    ✓ T is expected to be T
+   Testing empty category case
+    ✓ T is expected to be T
+   Testing whitespace category case
+    ✓ T is expected to be T
+ separate test
+   Testing only positive case
+   Expected behaviour: split a word by spaces
+    ✓ ("Hello" "World") is expected to be ("Hello" "World")
+ string-cdr test
+   Testing only positive case
+    ✓ "ello" is expected to be "ello"
+ build-sql-query tests
+   Expected behaviour: build the appropriate sql query for searching the database when the given query specifies categories and when it doesn't
+   Testing case WITH categories
+    ✓ "SELECT id, name, price, description FROM shop LEFT JOIN categories ON (shop.id = categories.shop_id) WHERE ((shop.name LIKE ?) AND (categories.category IN (?))) ORDER BY price DESC, name ASC" is expected to be "SELECT id, name, price, description FROM shop LEFT JOIN categories ON (shop.id = categories.shop_id) WHERE ((shop.name LIKE ?) AND (categories.category IN (?))) ORDER BY price DESC, name ASC"
+   Testing case WITHOUT categories
+    ✓ "SELECT id, name, price, description FROM shop LEFT JOIN categories ON (shop.id = categories.shop_id) WHERE (shop.name LIKE ?) ORDER BY price DESC, name ASC" is expected to be "SELECT id, name, price, description FROM shop LEFT JOIN categories ON (shop.id = categories.shop_id) WHERE (shop.name LIKE ?) ORDER BY price DESC, name ASC"
+ parse-search tests
+   Expected behaviour: parse a query into it's keyword and categories
+   Testing case WITH categories
+    ✓ (:SEARCH ("intel") :CATEGORIES ("cpu")) is expected to be (:SEARCH ("intel") :CATEGORIES ("cpu"))
+   Testing case WITHOUT categories
+    ✓ (:SEARCH ("intel") :CATEGORIES NIL) is expected to be (:SEARCH ("intel") :CATEGORIES NIL)
+ run-db-search tests
+   Expected behaviour: Run database search
+   Testing case WITH categories
+    ✓ ((2
+  "Intel Core i5-4690K Devil's Canyon Quad-Core 3.5 GHz LGA 1150 88W BX80646I54690K Desktop Processor Intel HD Graphics 4600"
+  337.0d0 "Haswell
+Unlocked Multiplier
+Turbo Boost")) is expected to be ((2
+  "Intel Core i5-4690K Devil's Canyon Quad-Core 3.5 GHz LGA 1150 88W BX80646I54690K Desktop Processor Intel HD Graphics 4600"
+  337.0d0 "Haswell
+Unlocked Multiplier
+Turbo Boost"))
+   Testing case WITHOUT categories
+    ✓ ((2
+  "Intel Core i5-4690K Devil's Canyon Quad-Core 3.5 GHz LGA 1150 88W BX80646I54690K Desktop Processor Intel HD Graphics 4600"
+  337.0d0 "Haswell
+Unlocked Multiplier
+Turbo Boost")) is expected to be ((2
+  "Intel Core i5-4690K Devil's Canyon Quad-Core 3.5 GHz LGA 1150 88W BX80646I54690K Desktop Processor Intel HD Graphics 4600"
+  337.0d0 "Haswell
+Unlocked Multiplier
+Turbo Boost"))
+ get-product-for tests
+   Expected behaviour: retrieve a product from the database matching an id
+   Test case WITH valid id
+    ✓ (2
+ "Intel Core i5-4690K Devil's Canyon Quad-Core 3.5 GHz LGA 1150 88W BX80646I54690K Desktop Processor Intel HD Graphics 4600"
+ 337.0d0 "Haswell
+Unlocked Multiplier
+Turbo Boost") is expected to be (2
+ "Intel Core i5-4690K Devil's Canyon Quad-Core 3.5 GHz LGA 1150 88W BX80646I54690K Desktop Processor Intel HD Graphics 4600"
+ 337.0d0 "Haswell
+Unlocked Multiplier
+Turbo Boost")
+   Test case WITHOUT valid id
+    ✓ NIL is expected to be NIL
+
+✓ 7 tests completed (44ms)
+#+END_EXAMPLE
