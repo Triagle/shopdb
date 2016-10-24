@@ -60,9 +60,9 @@
    (lambda (acc cur)
      (concatenate 'string (with-html-output-to-string (s)
                             (:ul
-                             (:li (:b (format nil "~a: " (car cur)) (:p (str (format nil (cond
-                                                                                           ((eql (type-of (cdr cur))'double-float) "~,2f")
-                                                                                           (t "~a")) (cdr cur)))))))) acc)) kv-pair :initial-value ""))
+                             (:li (:b (format nil "~a: " (car cur)) (str (format nil (cond
+                                                                                      ((eql (type-of (cdr cur))'double-float) "~,2f")
+                                                                                      (t "~a")) (cdr cur))))))) acc)) kv-pair :initial-value ""))
 
 (defun view-js ()
   (concatenate 'string
