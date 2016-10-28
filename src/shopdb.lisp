@@ -110,9 +110,10 @@
     (:body ,@args
       (:div :class "header"
             (:h2 :class "title" "Generic Shop")
-            (:div :id "navbar-row" :class "row"
-                  (:h6 (:a :href "/" "Home"))
-                  (:h6 (:a :href "/order" "Order"))))
+            (:span :id "navbar-row" :class "row"
+                   (:ul :id "navbar-list"
+                        (:li :class "navbar-link" (:h6 (:a :href "/" "Home")))
+                        (:li :class "navbar-link" (:h6 (:a :href "/order" "Order"))))))
       ,@body)))
 (defmacro defpage (name path args &body body)
   `(define-easy-handler (,name :uri ,path) ,args
@@ -134,15 +135,18 @@ if there were an empty string between them."
     (if (equal res '(nil))
         nil
         res)))
-(define-easy-handler (order-success-handler :uri "/successful-order") ()
+(define-easy-handler (order-success-handler :uri "/successful-order") (order)
   (with-html-output-to-string (s)
     (:html
-     (header)
-     (:body :onload (ps-inline (erase-cookie "order"))
-      (:div :class "header"
-            (:h1 "Your Order Was Successful!")
-            (:a :href "/" (:h3 "Continue Shopping")))))))
+      (header)
+      (:body :onload (ps-inline (erase-cookie "order"))
+        (:div :class "header"
+              (:h1 "Your Order Was Successful!")
+              (:a :href "/" (:h3 "Continue Shopping"))))))
+  )
 (define-easy-handler (order-handler :uri "/order") (id)
+  (when (equal id "null")
+    (redirect "/"))
   (let* ((order-list (mapcar #'parse-integer (or (split-by-char id #\,) nil)))
          (orders (if (or id (not (equal id "null")))
                      (get-products-for order-list)
@@ -166,28 +170,27 @@ if there were an empty string between them."
                             (when id
                               (str (format-rows orders))))
                     (:p (:b "Total: ") (when id
-                                         (str (format nil "$~,2f" (reduce #'+ (mapcar #'caddr orders))))
-                                         ))
+                                         (str (format nil "$~,2f" (reduce #'+ (mapcar #'caddr orders))))))
                     (:input
-                     :class "u-full-width" :type "submit" :value "Submit Order")))
-       ))))
+                     :class "u-full-width" :type "submit" :value "Submit Order")))))))
 (defpage view-handler "/view" (id)
   (let ((product (get-product-for id)))
-    (htm
-     (:div :class "container"
-          (:br)
-          (:br)
-          (:div :class "row"
-                (:div :class "six columns"
-                      (:img :src (format nil "/get-thumb?id=~a&full-res=1" (car product)) :alt (format nil "Image of ~a" (cadr product))))
+    (if product
+      (htm
+       (:div :class "container"
+             (:br)
+             (:br)
+             (:div :class "row"
+                   (:div :class "six columns"
+                         (:img :src (format nil "/get-thumb?id=~a&full-res=1" (car product)) :alt (format nil "Image of ~a" (cadr product))))
 
-                (:div :class "six columns"
-                      (str (format-key-value-to-html (pairlis '("Name" "Price" "Description") (cdr product))))
-                      (:button :type :button :onclick (ps-inline (let ((rc (read-cookie "order")))
-                                                                   (if rc
-                                                                       (create-cookie "order" (+ rc "," (get-u-r-l-parameter "id")) 1)
-                                                                       (create-cookie "order" (get-u-r-l-parameter "id") 1))))  "Order")
-                      ))))))
+                   (:div :class "six columns"
+                         (str (format-key-value-to-html (pairlis '("Name" "Price" "Description") (cdr product))))
+                         (:button :type :button :onclick (ps-inline (let ((rc (read-cookie "order")))
+                                                                      (if rc
+                                                                          (create-cookie "order" (+ rc "," (get-u-r-l-parameter "id")) 1)
+                                                                          (create-cookie "order" (get-u-r-l-parameter "id") 1))))  "Order"))))))
+    (redirect "/")))
 (defpage search-handler "/search" (query)
 
    (:div :class "container"

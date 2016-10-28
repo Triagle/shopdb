@@ -5,3 +5,14 @@
     margin-top: 6em;
     text-align: center;
 }
+ul#navbar-list {
+    width: 50%;
+    margin-left: 47.5%;
+    list-style-type: none !important;
+    padding: 0 !important;
+    overflow: hidden;
+}
+li.navbar-link {
+    float: left !important;
+    padding-right: 5px;
+}
